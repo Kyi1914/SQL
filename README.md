@@ -202,7 +202,7 @@ WHERE field_name LIKE pattern;
 > % : match zero or more
 > _ : match a single character  
 > example : to get the all names starts with An, pattern should be >> **'An%'**  
-> example : to get the all names starts with An and ends with p, pattern should be >> **'An%p'** 
+> example : to get the all names starts with An and ends with p, pattern should be >> **'An%p'**   
 > example : to get the all names with the third character is o, pattern should be >> **'__o%'** 
 
 selecting the name starts with A and ends with o followed by a character.
@@ -359,7 +359,7 @@ LIMIT number;
 ## 4.3 Filtering Group Data
 > [!IMPORTANT]   
 > KEYWORDS : **HAVING**;    
-> Syntax: ```GROUP BY field_name   Having creteria```     
+> Syntax: ```GROUP BY field_name Having creteria```     
 
 syntax
 ```
