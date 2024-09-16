@@ -8,7 +8,8 @@ table_name
 |---|---|---|
 |data|data|data|
 
-## Course 1: Introduction to SQL 
+## Course 1: Introduction to SQL > Querying Basic
+
 Selecting a single field
 ```ruby
 SELECT field_name  
@@ -50,7 +51,8 @@ FROM table_name;
 
 ## Course 2: Intermediate SQL
 
-### 2.1 SELECTING DATA
+### 2.1 SELECTING DATA 
+#### COUNT()
 
 Count the number of records from a single field
 ```ruby
@@ -76,6 +78,7 @@ SELECT COUNT(DISTINCT field_name) AS alias_field_name
 FROM table_name;
 ```
 
+#### LIMIT
 LIMIT the number of records to show in the result
 ```ruby
 SELECT COUNT(field_name), COUNT(filed_name1)
@@ -91,12 +94,13 @@ SELECT field_name
 FROM table_name
 WHERE criteria;
 ```
-
+#### WHERE with COMPARISON OPERATORS
 > [!NOTE]  
 > Criteria is the condition that we want to get from the database tables.   
-> example of criteria in WHERE statement >> WHERE age>20;  
-> example of criteria in WHERE statement >> WHERE name = 'Ave'  
-> syntax of criteria in WHERE statement >> field_name **comparison_operators** match_criteria
+> In the following examples, **age>20** and **name='Ave'** are creteria.   
+> example in WHERE statement >> WHERE age>20;  
+> example in WHERE statement >> WHERE name = 'Ave'  
+> syntax  >> ```WHERE field_name comparison_operators required_case```
 
 > [!IMPORTANT]   
 > Comparison Operators:
@@ -105,9 +109,9 @@ WHERE criteria;
 > - \=
 > - \>=
 > - \<=
-> - \<> : Not equal
+> - \<> : Not equal  
 
-WHERE with comparison operators
+WHERE with number
 ```ruby
 SELECT field_name
 FROM table_name
@@ -121,14 +125,19 @@ FROM table_name
 WHERE field_name = 'string';
 ```
 
-Multiple Creteria
+#### Multiple Creteria | WHERE with Logical Operators
 
 > [!IMPORTANT]   
 > Logical Operators:
 > - OR
 > - AND
-> - BETWEEN AND  
-> Use Logical Operators in WHERE clause.
+> - BETWEEN __ AND __
+
+> [!NOTE]  
+> Use Logical Operators in WHERE clause together with the creteria.
+> example in WHERE statement >> WHERE name='Apple' AND age = 30;  
+> example in WHERE statement >> WHERE age BETWEEN 20 AND 30;  
+> syntax  >> ```WHERE creteria_A logical_operators creteria_B```
 
 ```ruby
 SELECT *
@@ -164,4 +173,31 @@ SELECT *
 FROM table_name
 WHERE (year = 1980 OR year = 2000) 
     AND (blood_type = 'A' OR blood_type = 'B');
+```
+
+BETWEEN, AND, AND
+```ruby
+SELECT *
+FROM patient
+WHERE age BETWEEN 25 AND 40 AND blood_type = 'AB';
+```
+
+#### Filtering a pattern
+> [!NOTE]   
+> KEYWORDS : **LIKE, NOT LIKE, IN**;  
+> example : ```WHERE field_name LIKE 'pattern'```  
+> example : ```WHERE field_name NOT LIKE 'pattern'```  
+> example : ```WHERE field_name IN (number,number,number)```  
+> example : ```WHERE field_name IN ('string','string','string')```
+
+> [!NOTE]   
+> pattern : **%, _**;  
+> % : match zero or more
+> _ : match a single character
+
+to get the all names end with a
+```ruby
+SELECT name
+FROM table_name
+WHERE name LIKE '%a';
 ```
