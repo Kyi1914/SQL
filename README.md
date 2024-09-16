@@ -2,11 +2,19 @@
 
 > [!NOTE]  
 > Note for terminology  
+>table_name
+>|field_name|field_name2|field_name3|
+>|---|---|---|
+>|data|data|data|
 
-table_name
-|field_name|field_name2|field_name3|
-|---|---|---|
-|data|data|data|
+> [!NOTE]  
+> Execution Order  
+> 1. FROM
+> 2. WHERE
+> 3. SELECT and aliasing
+> 4. GROUP BY
+> 5. ORDER BY
+> 6. LIMIT
 
 ## 1. Querying Basic
 
