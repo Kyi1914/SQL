@@ -8,7 +8,7 @@ table_name
 |---|---|---|
 |data|data|data|
 
-## 1. Querying Basic
+## Course 1: Introduction to SQL > Querying Basic
 
 Selecting a single field
 ```ruby
@@ -28,20 +28,19 @@ SELECT *
 FROM table_name;
 ```
 
-## 1.2 Aliasing: to rename columns in result
-
+Aliasing: to rename columns in result
 ```ruby
 SELECT field_name AS alias_for_field_name
 FROM table_name;
 ```
-## 1.3 Selecting distinct records
 
+Selecting distinct records
 ```ruby
 SELECT DISTINCT field_name
 FROM table_name;
 ```
 
-## 1.4 Creating a VIEW table
+Creating a VIEW table
 ```ruby
 CREATE VIEW view_table_name AS
 SELECT field_name
@@ -50,8 +49,10 @@ FROM table_name;
 > [!IMPORTANT]  
 > VIEW table is created using the SELECT statement. You can apply any SELECT statement.
 
-Intermediate SQL
-## 2.1 COUNT()
+## Course 2: Intermediate SQL
+
+### 2.1 SELECTING DATA 
+#### COUNT()
 
 Count the number of records from a single field
 ```ruby
@@ -77,7 +78,7 @@ SELECT COUNT(DISTINCT field_name) AS alias_field_name
 FROM table_name;
 ```
 
-## 2.2 LIMIT
+#### LIMIT
 LIMIT the number of records to show in the result
 ```ruby
 SELECT COUNT(field_name), COUNT(filed_name1)
@@ -85,7 +86,7 @@ FROM table_name
 LIMIT number;
 ```
 
-## 2.3 Filtering
+### 2.2 Filtering
 
 WHERE statement
 ```ruby
@@ -93,7 +94,7 @@ SELECT field_name
 FROM table_name
 WHERE criteria;
 ```
-#### 2.3.1 WHERE with COMPARISON OPERATORS
+#### WHERE with COMPARISON OPERATORS
 > [!NOTE]  
 > Criteria is the condition that we want to get from the database tables.   
 > In the following examples, **age>20** and **name='Ave'** are creteria.   
@@ -124,7 +125,7 @@ FROM table_name
 WHERE field_name = 'string';
 ```
 
-#### 2.3.2 Multiple Creteria | WHERE with Logical Operators
+#### Multiple Creteria | WHERE with Logical Operators
 
 > [!IMPORTANT]   
 > Logical Operators:
@@ -181,7 +182,7 @@ FROM patient
 WHERE age BETWEEN 25 AND 40 AND blood_type = 'AB';
 ```
 
-#### 2.3.3 Filtering a pattern | WHERE with Pattern
+#### Filtering a pattern | WHERE with Pattern
 
 syntax
 ```ruby
@@ -226,7 +227,7 @@ FROM people
 WHERE country IN (2000,2020, 2010);
 ```
 
-## 2.4 NULL values
+#### NULL values
 > [!IMPORTANT]   
 > KEYWORDS : **IS NULL, IS NOT NULL**;  
 > syntax : ```WHERE field_name IS NULL```  
@@ -246,11 +247,14 @@ FROM table_name
 WHERE field_name IS NOT NULL;
 ```
 
+#### NULL values
 > [!NOTE]    
 > COUNT(field_name) includes only not null values
 > COUNT(*) includes null values
 
-## 2.5 Aggregate Function
+### 2.3 Aggregate Functions and Arithmetic
+
+#### Aggregate Function
 
 > [!IMPORTANT]   
 > Aggregate functions : **AVG(), SUM(), MIN(), MAX(), COUNT()**;
@@ -273,7 +277,7 @@ FROM planning
 WHERE year = 2010;
 ```
 
-## 2.6 ROUND()
+#### ROUND()
 syntax
 ```
 SELECT ROUND(Aggregate_Function(field_name),round_instruction)
@@ -292,7 +296,7 @@ FROM planning;
 > ROUND to a * decimal places : **ROUND(AVG(),2), ROUND(AVG(),3)**;  
 > ROUND using a negative number : **ROUND(AVG(),-1), ROUND(AVG(),-3)**;  
 
-## 2.7 Arithmetic Function
+#### Arithmetic Function
 > [!IMPORTANT]   
 > arithmetic : **+, -, *, /**;  
 > 3/2 and 3.0/2.0 will get different result and different data type.  
@@ -302,10 +306,6 @@ syntax
 SELECT (field_name - field_name) AS alias_field_name
 FROM table_name;
 ```
-
-> [!NOTE]   
-> Arithmetic function for records / row.  
-> Aggregate function for field / column.  
 
 ## 4.1 Sorting
 
