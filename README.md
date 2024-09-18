@@ -1,5 +1,13 @@
 # SQL Query Syntax
 
+## Table of Contents
+1. [Querying Basic](#1-querying-basic)
+2. [Aliasing](#12-aliasing-to-rename-columns-in-result)
+3. [](#13-selecting-distinct-records)
+[](#14-creating-a-view-table)
+[](#21-count)
+
+
 > [!NOTE]  
 > Note for terminology  
 >table_name
