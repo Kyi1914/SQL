@@ -228,8 +228,8 @@ WHERE field_name LIKE pattern;
 
 > [!IMPORTANT]   
 > pattern : **%, _**;  
-> % : match zero or more
-> _ : match a single character  
+>   - % : match zero or more  
+>   - _ : match a single character  
 > example : to get the all names starts with An, pattern should be >> **'An%'**  
 > example : to get the all names starts with An and ends with p, pattern should be >> **'An%p'**   
 > example : to get the all names with the third character is o, pattern should be >> **'__o%'** 
@@ -276,7 +276,7 @@ WHERE field_name IS NOT NULL;
 ```
 
 > [!NOTE]    
-> COUNT(field_name) includes only not null values
+> COUNT(field_name) includes only not null values  
 > COUNT(*) includes null values
 
 ## 2.5 Aggregate Function
@@ -285,8 +285,8 @@ WHERE field_name IS NOT NULL;
 > Aggregate functions : **AVG(), SUM(), MIN(), MAX(), COUNT()**;
 > Use aggregate functions in SELECT statement.
 > example: ```SELECT AVG(sales)```
-> AVG() and SUM() can work with numerical fields only.
-> MIN(), MAX(), COUNT() work with various data types.
+> AVG() and SUM() can work with numerical fields only.  
+> MIN(), MAX(), COUNT() work with various data types.  
 
 syntax
 ```
