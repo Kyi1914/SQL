@@ -1,12 +1,25 @@
 # SQL Query Syntax
 
 ## Table of Contents
-1. [Querying Basic](#1-querying-basic)
-2. [Aliasing](#12-aliasing-to-rename-columns-in-result)
-3. [](#13-selecting-distinct-records)
-[](#14-creating-a-view-table)
-[](#21-count)
-
+1. Basic Selecting statement
+- [Querying Basic](#1-querying-basic)
+- [Aliasing](#12-aliasing-to-rename-columns-in-result)
+- [Distinct](#13-selecting-distinct-records)
+- [View table](#14-creating-a-view-table)
+2. Querying
+- [Count](#21-count)
+- [Limit](#22-limit)
+- [Filtering](#23-filtering)
+    - [Single Creteria | WHERE with comparison operators](#231-where-with-comparison-operators)
+    - [Multiple Creteria | WHERE with logical operators](#232-multiple-creteria--where-with-logical-operators)
+    - [WHERE with a pattern](#233-filtering-a-pattern--where-with-pattern)
+- [NULL](#24-null-values)
+- [Aggregate](#25-aggregate-function)
+- [Rounding the aggregate function result](#26-round)
+- [Arithmetic Function](#27-arithmetic-function)
+- [Sorting](#41-sorting)
+- [Grouping](#42-grouping)
+- [Filtering the group data](#43-filtering-group-data)
 
 > [!NOTE]  
 > Note for terminology  
