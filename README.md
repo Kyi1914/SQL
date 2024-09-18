@@ -164,9 +164,10 @@ WHERE field_name = 'string';
 > - BETWEEN __ AND __
 
 > [!NOTE]  
-> Use Logical Operators in WHERE clause together with the creteria.
-> example in WHERE statement >> WHERE name='Apple' AND age = 30;  
-> example in WHERE statement >> WHERE age BETWEEN 20 AND 30;  
+> Use Logical Operators in WHERE clause together with the creteria.  
+> example in WHERE statement >> 
+>   - WHERE name='Apple' AND age = 30;  
+>   - WHERE age BETWEEN 20 AND 30;   
 > syntax  >> ```WHERE creteria_A logical_operators creteria_B```
 
 ```ruby
