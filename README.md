@@ -81,7 +81,6 @@ FROM table_name;
 > [!IMPORTANT]  
 > VIEW table is created using the SELECT statement. You can apply any SELECT statement.
 
-Intermediate SQL
 ## 2.1 COUNT()
 
 Count the number of records from a single field
@@ -124,13 +123,16 @@ SELECT field_name
 FROM table_name
 WHERE criteria;
 ```
-#### 2.3.1 WHERE with COMPARISON OPERATORS
 > [!NOTE]  
 > Criteria is the condition that we want to get from the database tables.   
 > In the following examples, **age>20** and **name='Ave'** are creteria.   
-> example in WHERE statement >> WHERE age>20;  
-> example in WHERE statement >> WHERE name = 'Ave'  
-> syntax  >> ```WHERE field_name comparison_operators required_case```
+> example in WHERE statement : WHERE age>20;  
+> example in WHERE statement : WHERE name = 'Ave'  
+
+#### 2.3.1 WHERE with COMPARISON OPERATORS
+> [!NOTE]  
+> Use the comparison operators in WHERE statement.  
+> syntax : ```WHERE field_name comparison_operators required_case```
 
 > [!IMPORTANT]   
 > Comparison Operators:
@@ -165,10 +167,9 @@ WHERE field_name = 'string';
 
 > [!NOTE]  
 > Use Logical Operators in WHERE clause together with the creteria.  
-> example in WHERE statement >> 
->   - WHERE name='Apple' AND age = 30;  
->   - WHERE age BETWEEN 20 AND 30;   
-> syntax  >> ```WHERE creteria_A logical_operators creteria_B```
+> example : WHERE name='Apple' AND age = 30;  
+> example : WHERE age BETWEEN 20 AND 30;    
+> syntax  : ```WHERE creteria_A logical_operators creteria_B```
 
 ```ruby
 SELECT *
@@ -188,7 +189,7 @@ FROM table_name
 WHERE field_name BETWEEN number AND number;
 ```
 > [!NOTE]   
-> syntax : WHERE field_name BETWEEN **number** AND **number**;  
+> syntax  : ```WHERE field_name BETWEEN number AND number;```  
 > example : WHERE pockets BETWEEN **1** AND **5**;
 
 AND, OR basic syntax
@@ -231,11 +232,12 @@ WHERE field_name LIKE pattern;
 
 > [!IMPORTANT]   
 > pattern : **%, _**;  
->   - % : match zero or more  
->   - _ : match a single character  
-> example : to get the all names starts with An, pattern should be >> **'An%'**  
-> example : to get the all names starts with An and ends with p, pattern should be >> **'An%p'**   
-> example : to get the all names with the third character is o, pattern should be >> **'__o%'** 
+> % : match zero or more  
+> _ : match a single character  
+> example : 
+>   - to get the all names starts with An, pattern should be >> **'An%'**  
+>   - to get the all names starts with An and ends with p, pattern should be >> **'An%p'**   
+>   - to get the all names with the third character is o, pattern should be >> **'__o%'** 
 
 selecting the name starts with A and ends with o followed by a character.
 ```ruby
