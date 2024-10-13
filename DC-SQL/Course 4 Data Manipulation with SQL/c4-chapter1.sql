@@ -23,11 +23,34 @@
     FROM match
     WHERE season = '2013/2014'
 
--- 4.1.2 simple subqueries
--- 4.1.3 Correlated subqueries
--- 4.1.4 Window functions
+-- ### NULL in CASE ###
 
--- CASE with aggregate functions
+-- this query includes null in result
+SELECT 
+    date, season,
+    CASE 
+        WHEN hometeam_id = 8455 AND home_goal > away_goal THEN 'Chelsea home win'
+        WHEN awayteam_id = 8455 AND home_goal < away_goal THEN 'Chelsea away win'
+    END AS outcome 
+
+-- to filter NULL
+
+FROM match
+SELECT 
+    date, season,
+    CASE 
+        WHEN hometeam_id = 8455 AND home_goal > away_goal THEN 'Chelsea home win'
+        WHEN awayteam_id = 8455 AND home_goal < away_goal THEN 'Chelsea away win'
+    END AS outcome 
+FROM match
+WHERE 
+    CASE 
+        WHEN hometeam_id = 8455 AND home_goal > away_goal THEN 'Chelsea home win'
+        WHEN awayteam_id = 8455 AND home_goal < away_goal THEN 'Chelsea away win'
+    END IS NOT NULL
+
+-- ### CASE with aggregate functions ###
+-- prepare a summary table counting the number of home and away games that Liverpool won in each season.
 -- CASE WHEN with COUNT
 SELECT 
     season,
@@ -39,58 +62,65 @@ GROUP BY season;
 
 SELECT 
     season,
-    COUNT(CASE WHEN hometeam_id = 8650 AND home_goal > away_goal THEN id END) AS home_wins,
-    COUNT(CASE WHEN hometeam_id = 8650 AND home_goal < away_goal THEN id END) AS away_wins
+    COUNT(CASE WHEN hometeam_id = 8650 AND home_goal > away_goal THEN 54321 END) AS home_wins,
+    COUNT(CASE WHEN hometeam_id = 8650 AND home_goal < away_goal THEN 'Some random text' END) AS away_wins
 FROM match
 GROUP BY season;
 
 -- CASE WHEN with SUM
 SELECT 
     season,
-    SUM(CASE WHEN hometeam_id = 8650
-          THEN home_goal END) AS home_goals,
-    SUM(CASE WHEN awayteam_id = 8650
-          THEN away_goal END) AS away_goals,
+    SUM(CASE WHEN hometeam_id = 8650 THEN home_goal END) AS home_goals,
+    SUM(CASE WHEN awayteam_id = 8650 THEN away_goal END) AS away_goals,
 FROM match
 GROUP BY season;
 
 -- CASE WHEN with AVG
 SELECT 
     season,
-    AVG(CASE WHEN hometeam_id = 8650
-          THEN home_goal END) AS avg_home_goals,
-    AVG(CASE WHEN awayteam_id = 8650
-          THEN away_goal END) AS avg_away_goals,
+    AVG(CASE WHEN hometeam_id = 8650 THEN home_goal END) AS avg_home_goals,
+    AVG(CASE WHEN awayteam_id = 8650 THEN away_goal END) AS avg_away_goals,
 FROM match
 GROUP BY season;
 
 -- round the avg
 SELECT 
     season,
-    ROUND(AVG(CASE WHEN hometeam_id = 8650
-          THEN home_goal END),2) AS avg_home_goals,
+    ROUND(AVG(CASE WHEN hometeam_id = 8650 THEN home_goal END),2) AS avg_home_goals,
 FROM match
 GROUP BY season;
 
 -- percentages
+-- What percentage of Liverpool's games did they win in each season?
 SELECT 
     season,
-    AVG(CASE WHEN hometeam_id = 8650 AND home_goal > away_goal THEN 1 
+    AVG(CASE 
+            WHEN hometeam_id = 8650 AND home_goal > away_goal THEN 1 
             WHEN hometeam_id = 8650 AND home_goal < away_goal THEN 0
-            END) AS percentages_homewins
+        END) AS percentages_homewins
+    AVG(CASE 
+            WHEN awayteam_id = 8650 AND home_goal < away_goal THEN 1
+            WHEN awayteam_id = 8650 AND home_goal > away_goal THEN 0
+        END) AS percentages_awaywins
 FROM match
 GROUP BY season;
 
 -- round the percentages
 SELECT 
     season,
-    ROUND(AVG(CASE WHEN hometeam_id = 8650 AND home_goal > away_goal THEN 1 
+    ROUND(AVG(CASE 
+            WHEN hometeam_id = 8650 AND home_goal > away_goal THEN 1 
             WHEN hometeam_id = 8650 AND home_goal < away_goal THEN 0
-            END),2) AS percentages_homewins
+        END),2) AS percentages_homewins
+    ROUND(AVG(CASE 
+            WHEN awayteam_id = 8650 AND home_goal < away_goal THEN 1
+            WHEN awayteam_id = 8650 AND home_goal > away_goal THEN 0
+        END),2) AS percentages_awaywins
 FROM match
 GROUP BY season;
 
--- 1.4 WHERE are the subquery?
+-- # Chapter 2 #
+-- 2.1 WHERE are the subquery?
 -- subquery can be placed in any part of a query.
 -- > SELECT, FROM, WHERE , GROUP BY
 
@@ -124,3 +154,10 @@ WHERE team_api_id IN
     FROM match
     WHERE country_id = 15722);
  
+
+
+
+
+-- 4.1.2 simple subqueries
+-- 4.1.3 Correlated subqueries
+-- 4.1.4 Window functions
