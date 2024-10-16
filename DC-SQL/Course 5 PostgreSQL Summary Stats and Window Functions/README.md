@@ -319,10 +319,280 @@ ORDER BY third ASC;
 
 ## Chapter 3: Aggregate window functions and frames
 ### 3.1 Aggregate window functions
+Query: Source Table
+```ruby
+SELECT 
+    year, COUNT(*) AS medals
+FROM summer_medals
+WHERE
+    country = 'BRA' AND
+    medal = 'gold' AND
+    year >= 1992
+GROUP BY year
+ORDER BY year ASC;
+```
+<img src = '.\image\l18.png'>
+
+standard aggregate function > max query: 
+```ruby
+WITH brazil_medatls AS (--)
+SELECT MAX(medals) FROM brazil_medals
+```
+standard aggregate function > Result > 18
+
+```ruby
+WITH brazil_medatls AS (--)
+SELECT SUM(medals) FROM brazil_medals
+```
+Result > 64
+
+> [!NOTE]  
+> MAX, SUM, MIN, COUNT, AVG as window functions.  
+>
+
+#### MAX window function  
+Query  
+```ruby
+WITH brazil_medatls AS (--)
+SELECT 
+    year, medals,
+    MAX(medals) OVER (ORDER BY year ASC) AS max_medals
+FROM brazil_medals
+```
+<img src = '.\image\l19.png'>    
+
+in 1992, Brazil earned 13 medals. Since it's the first row, that's the max so far of medals earned. In the next set of games, those of 1996, only 5 medals were earned, so the max is still 13. In 2004, the games after the 1996 games, 18 medals were earned, which is higher than the previous max of 13, so the max becomes 18.  
+
+#### SUM window function  
+Query 
+```ruby
+WITH brazil_medatls AS (--)
+SELECT 
+    year, medals,
+    SUM(medals) OVER (ORDER BY year ASC) AS medals_rt
+FROM brazil_medals
+```
+<img src = '.\image\l20.png'>    
+
+#### Partitioning with aggregate window function 
+Query 
+```ruby
+WITH medatls AS (--)
+SELECT 
+    year, medals,
+    SUM(medals) OVER (PARTITION BY country ORDER BY year ASC) AS medals_rt
+FROM medals
+```
+
 ### 3.2 Frames
+> [!NOTE]  
+> Another way to change the window function behaviour
+> By default, a frame starts at the beginning of a table or partition and ends at the current row
+> Frame: 
+>- ```UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING```
+>- ```ROWS BETWEEN``` : ROWS BETWEEN [start] AND [FINISH]
+>   - Start and finish can be one of 3 clauses: ```PRECEDING, CURRENT ROW, and FOLLOWING. ```
+>   - CURRENT ROW is to set the start or finish at the current row, 
+>   - n FOLLOWING is to set it at n rows after the current row. 
+>   - e.g 
+>       - ```ROWS BETWEEN 3 PRECEDING AND CURRENT ROW```: starts 3 rows before the current row and ends at the current row
+>       - ```ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING```: one row before the current row and ends one row after the current row, so the frame is 3 rows.
+>       - ```ROWS BETWEEN 5 PRECEDING AND 1 PRECEDING```:  five rows before the current row and ends one row before the current row, so the frame is 5 rows.
+>
+
+#### MAX with a frame
+```ruby
+WIHT russia_medals AS (
+    SELECT 
+        year, COUNT(*) AS medals
+    FROM summer_medals
+    WHERE 
+        country = 'RUS'
+        AND medal = 'gold'
+    GROUP BY year
+    ORDER BY year ASC;
+)
+
+SELECT 
+    year, medals, 
+    MAX(medals) OVER (ORDER BY year ASC) AS max_medals,
+    MAX(medals) 
+                OVER (ORDER BY year ASC
+                      ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) AS max_medals_last
+FROM russia_medals
+ORDER BY year ASC;
+```
+<img src = '.\image\l21.png'> 
+
 ### 3.3 Moving averages and totals
+> [!NOTE]  
+> Moving average(MA): Average of last n periods
+> - used to indicate momentum / trends
+> - useful in eliminating seasonality
+> Moving average : AVG() OVER (frames syntax)
+> Moving total : SUM() OVER (frames syntax)
+> ```RANGE BETWEEN [start] AND [finish]```
+> - RANGE treats duplicates in the columns in the ORDER BY subclause as single entities, whereas ROWS does not.
+
+#### 3 Years Moving Average
+```ruby
+WIHT us_medals AS (
+    SELECT 
+        year, COUNT(*) AS medals
+    FROM summer_medals
+    WHERE 
+        country = 'USA'
+        AND medal = 'gold'
+        AND year >= 1980
+    GROUP BY year
+    ORDER BY year ASC;
+)
+
+SELECT 
+    year, medals, 
+    AVG(medals) 
+                OVER (ORDER BY year ASC
+                      ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS medal_MA
+FROM us_medals
+ORDER BY year ASC;
+```
+<img src = '.\image\l22.png'> 
 
 ## Chapter 4: Beyond window functions
 ### 4.1 Pivoting
+> [!NOTE]  
+> - to transform ranking data from a vertical to a horizontal structure,
+> KEYWORDS: ```CROSSTAB```
+> ```CREATE EXTENSION IF NOT EXISTS tablefunc;```
+> - CREATE EXTENSION: makes extra functions in an extension available for use.
+> - tablefunc: contains the CROSSTAB function
+> ```SELECT * FROM CROSSTAB ($ sourceSQL $) S ct (columnName DataType)```
+
+Queries  
+Before
+```ruby
+SELECT 
+    country, year, COUNT(*) AS Awards
+FROM summer_medals
+WHERE 
+    country IN ('CHN','RUS','USA')
+    AND year in (2008, 2012)
+    AND medal = 'gold'
+GROUP BY country, year
+ORDER BY country ASC, year ASC;
+```
+After
+```ruby
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
+SELECT * FROM CROSSTAB ($$
+    SELECT 
+        country, year, COUNT(*)::INTEGER AS Awards
+    FROM summer_medals
+    WHERE 
+        country IN ('CHN','RUS','USA')
+        AND year in (2008, 2012)
+        AND medal = 'gold'
+    GROUP BY country, year
+    ORDER BY country ASC, year ASC;
+$$) AS ct (country VARCHAR, "2008" INTEGER, '2012' INTEGER)
+ORDER BY country ASC;
+```
+
 ### 4.2 ROLLUP and CUBE
+
+#### ROLLUP
+> [!NOTE]  
+> - to calculate group-level and grand totals
+> KEYWORDS: ```ROLLUP```
+>  - GROUP BY subclause that includes extra rows for group level aggregations.
+
+Query  
+
+The old way
+```ruby
+SELECT 
+    country, medal, COUNT(*) AS Awards
+FROM summer_medals
+WHERE 
+    year = 2008 AND country IN ('CHN','RUS')
+GROUP BY country, medal
+ORDER BY country ASC, medal ASC
+
+UNION ALL
+
+SELECT 
+    country, 'total', COUNT(*) AS Awards
+FROM summer_medals
+WHERE 
+    year = 2008 AND country IN ('CHN','RUS')
+GROUP BY country, 2
+ORDER BY country ASC;
+
+```
+ROLLUP Query
+```ruby
+SELECT
+    country, medal, COUNT(*) AS Awards
+FROM summer_medals
+WHERE
+    year = 2008 AND country IN ('CHN', 'RUS')
+GROUP BY ROLLUP(country, medal)
+ORDER BY country ASC, medal ASC;
+```
+<img src = '.\image\l23.png'>   
+
+The rows for which Country is filled but Medal is null represent the Country-level totals; for example, 184 medals in total were awarded to China in 2008.   
+he row with nulls in both columns is the grand total.  
+Notice that there are no Medal-level totals, since you're ROLL-ing UP by Country then Medal, and not vice-versa.   
+
+#### CUBE
+> [!NOTE]  
+> - to calculate group-level and grand totals, much like its cousin ROLLUP, except that it's not hierarchical. It generates all possible group-level aggregations.
+> KEYWORDS: ```ROLLUP```
+>  - GROUP BY subclause that includes extra rows for group level aggregations.
+
+CUBE Query
+```ruby
+SELECT
+    country, medal, COUNT(*) AS Awards
+FROM summer_medals
+WHERE
+    year = 2008 AND country IN ('CHN', 'RUS')
+GROUP BY CUBE(country, medal)
+ORDER BY country ASC, medal ASC;
+```
+<img src = '.\image\l24.png'>  
+
+Notice that Medal-level totals are included as well as Country-level totals.   
+The Medal-level totals are those whose Country is null but whose Medal is not.   
+For example, China and Russia were awarded a total of 117 gold medals in 2008. The grand total is also included.
+
 ### 4.3 A survey of useful functions
+> [!NOTE]  
+> Nulls ahoy : ```COALESCE```
+
+Query
+```ruby
+SELECT
+    COALESCE(country, 'Both countries') AS country,
+    COALESCE(medal, 'All medals') AS medal,
+    COUNT(*) AS Awards
+FROM summer_medals
+WHERE
+    year = 2008 AND country IN ('CHN', 'RUS')
+GROUP BY CUBE(country, medal)
+ORDER BY country ASC, medal ASC;
+```
+<img src = '.\image\l25.png'> 
+
+> [!NOTE]  
+> Compressing data : ```STRING_AGG (column, separator)```
+> ```STRING_AGG(Letter,', ')``` >> A, B, C
+
+```ruby
+SELECT STRING_AGG(country, ', ')
+FROM country_medals
+```
+
+
