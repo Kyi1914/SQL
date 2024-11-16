@@ -136,7 +136,7 @@ FROM rental;
     ```sql
     SELECT date '2005-09-11' - date '2005-09-10'
     ```
-    - result >> 1 (integer data type)
+    result >> 1 (integer data type)
   - 2.
   ```sql
     SELECT date '2005-09-11' + integer '3';
@@ -147,12 +147,23 @@ FROM rental;
     SELECT date '2005-09-11 00:00:00' - date '2005-09-09 00:00:00';
     ```
     - result >> 1 day 12:00:00 (interval)
+
 - AGE function : to caluclate difference between two timestamp
   ```sql
     SELECT AGE(timestamp '2005-09-11 00:00:00' - timestamp '2005-09-09 00:00:00');
     ```
     - result >> 1 day 12:00:00 (interval) [note: similar with No.3]
-### 2.2 retrieving current date and value
+
+### 2.2 retrieving current date and time value
+- NOW() Function : current timestamp with microsecond precion and time zone.
+- CURRENT_TIMESTAMP : alternative of NOW()
+  ```sql
+  SELECT CURRENT_TIMESTAMP(2)
+  ```
+- CASTING(): retrieving the current timestamp
+  - SELECT NOW()::TIMESTAMP
+
+
 ### 2.3 Extracting and transforming date/time data
 - EXTRACT()
 ```sql
@@ -182,6 +193,7 @@ SELECT
 FROM pyament
 GROUP BY 1,2;
 ```
+
 ## Chapter 3 - Parsing and Manipulating Text 
 ### 3.1 Reformatting string and character data
 - String concatenation operator
