@@ -32,7 +32,7 @@ Missing values should be replaced with 2023.
 target_guests	Nominal. The primary type of guest that is expected to use the hotel. Can be one of 'Leisure' or 'Business'.
 Missing values should be replaced with 'Leisure'.
 
-error task 1
+task 1
 ```sql
 -- Write your query for task 1 in this cell
 -- SELECT * FROM branch LIMIT 10;
